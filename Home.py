@@ -2,9 +2,12 @@ import streamlit as st
 from src.authenticate import login, register, guest_login
 import src.sidebar as sidebar
 
+
 def main():
     sidebar.show_sidebar()
     
+
+   
     # Giao diện đăng nhập
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False

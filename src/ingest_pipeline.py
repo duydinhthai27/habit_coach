@@ -8,9 +8,10 @@ from llama_index.llms.openai import OpenAI
 import openai
 import streamlit as st
 from src.global_settings import STORAGE_PATH, FILES_PATH, CACHE_FILE
-from src.prompts import CUSTORM_SUMMARY_EXTRACT_TEMPLATE
+from src.prompts import CUSTOM_SUMMARY_EXTRACT_TEMPLATE
 
-openai.api_key = st.secrets.openai.OPENAI_API_KEY
+openai.api_key = st.secrets["openai"]["OPENAI_API_KEY"]
+
 Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0.2)
 
 def ingest_documents():
@@ -42,7 +43,7 @@ def ingest_documents():
                 chunk_size=512, 
                 chunk_overlap=20
             ),
-            SummaryExtractor(summaries=['self'], prompt_template=CUSTORM_SUMMARY_EXTRACT_TEMPLATE),
+            SummaryExtractor(summaries=['self'], prompt_template=CUSTOM_SUMMARY_EXTRACT_TEMPLATE),
             OpenAIEmbedding()
         ],
         cache=cached_hashes

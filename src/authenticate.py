@@ -29,25 +29,25 @@ def verify_password(stored_password, provided_password):
 def register():
     with st.form(key="register"):
         st.subheader('Register')
-        username = st.text_input('Tên tài khoản')
+        username = st.text_input('Username')
         email = st.text_input('Email')
-        name = st.text_input('Họ tên')
-        age = st.number_input('Tuổi', min_value=5, max_value=100)
-        gender = st.selectbox('Giới tính', ['Nam', 'Nữ', 'Khác'])
-        job = st.text_input('Nghề nghiệp')
-        address = st.text_input('Địa chỉ')
-        password = st.text_input('Mật khẩu', type='password')
-        confirm_password = st.text_input('Xác nhận mật khẩu', type='password')
+        name = st.text_input('Full Name')
+        age = st.number_input('Age', min_value=5, max_value=100)
+        gender = st.selectbox('Gender', ['Male', 'Female', 'Other'])
+        job = st.text_input('Occupation')
+        address = st.text_input('Address')
+        password = st.text_input('Password', type='password')
+        confirm_password = st.text_input('Confirm Password', type='password')
 
-        if st.form_submit_button('Đăng ký'):
+        if st.form_submit_button('Register'):
             users = load_users()
             if len(users['usernames']) >= 10:
-                st.error('Số lượng người dùng đã đạt giới hạn tối đa!')
+                st.error('The maximum number of users has been reached!')
             elif not username or not password:
-                st.error('Bạn cần nhập tên tài khoản và mật khẩu!')
+                st.error('You need to enter a username and password!')
             elif password == confirm_password:
                 if username in users['usernames']:
-                    st.error('Tên tài khoản không hợp lệ!')
+                    st.error('Username is not available!')
                 else:
                     hashed_password = hash_password(password)
                     users['usernames'][username] = {
@@ -68,15 +68,16 @@ def register():
                             st.session_state.user_info = st.session_state.user_info + f"{key}:{value}, "
                     st.rerun()
             else:
-                st.error('Mật khẩu không khớp!')
+                st.error('Passwords do not match!')
+
 
 # Tạo giao diện đăng nhập
 def login():
     with st.form(key="login"):
-        username = st.text_input('Tên đăng nhập')
-        password = st.text_input('Mật khẩu', type='password')
+        username = st.text_input('Username')
+        password = st.text_input('Password', type='password')
 
-        if st.form_submit_button('Đăng nhập'):
+        if st.form_submit_button('Login'):
             users = load_users()
             if username in users['usernames']:
                 stored_password = users['usernames'][username]['password']
@@ -89,15 +90,15 @@ def login():
                             st.session_state.user_info = st.session_state.user_info + f"{key}:{value}, "
                     st.rerun()
                 else:
-                    st.error('Mật khẩu không chính xác!')
+                    st.error('Incorrect password!')
             else:
-                st.error('Tên đăng nhập không đúng!')
+                st.error('Username is incorrect!')
 
 def guest_login():
-    if st.button('Khách đăng nhập'):
+    if st.button('Guest Login'):
         st.session_state.logged_in = True
-        st.session_state.username = 'Khách'
-        st.session_state.user_info = f"username:{st.session_state.username}, "+ "Chưa cung cấp thông tin"
+        st.session_state.username = 'Guest'
+        st.session_state.user_info = f"username:{st.session_state.username}, "+ "Information not provided"
         st.rerun()
 if __name__ == '__main__':
     if 'logged_in' not in st.session_state:
@@ -107,8 +108,8 @@ if __name__ == '__main__':
         with st.expander('AIO MENTAL HEALTH', expanded=True):
             login_tab, create_tab = st.tabs(
                 [
-                    "Đăng nhập",
-                    "Tạo tài khoản",
+                    "Login",
+                    "Create account",
                 ]
             )
             with create_tab:
