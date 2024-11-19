@@ -29,6 +29,8 @@ def load_chat_store(username):
     ref = db.collection(FIREBASE_DB_PATH).document(username)
     chat_data = ref.get().to_dict()
     print(chat_data)
+    if chat_data is None:
+        chat_data = {}
     if "store" in chat_data:
             chat_store = SimpleChatStore()
             for username, messages in chat_data['store'].items():
