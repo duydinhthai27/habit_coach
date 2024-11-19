@@ -16,8 +16,7 @@ cred = credentials.Certificate(firebase_config_dict)
 try:
     # Initialize the app with a service account, granting admin privileges
     if not firebase_admin._apps:
-        cred = credentials.Certificate("path/to/your/serviceAccountKey.json")
-        firebase_admin.initialize_app(cred)
+        initialize_app(cred)
 except Exception as err:
     # Swallow the error (log it or handle it)
     print(f"Error during Firebase initialization: {err}")
