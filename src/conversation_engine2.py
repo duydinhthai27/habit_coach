@@ -77,35 +77,6 @@ def display_messages(chat_store, container, key):
                 with st.chat_message(message.role, avatar=professor_avatar):
                     st.markdown(message.content)
 
-def save_score(score, content, total_guess, username):
-    """Write score and content to a file.
-
-    Args:
-        score (string): Score of the user's mental health.
-        content (string): Content of the user's mental health.
-        total_guess (string): Total guess of the user's mental health.
-    """
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_entry = {
-        "username": username,
-        "Time": current_time,
-        "Score": score,
-        "Content": content,
-        "Total guess": total_guess
-    }
-    
-    # Read data from Firebase if exists
-    ref = db.collection('scores').document(username)
-    data = ref.get().to_dict() or []
-    
-    # Add new entry to the list
-    if isinstance(data, list):
-        data.append(new_entry)
-    else:
-        data = [new_entry]
-    
-    # Save data back to Firebase
-    ref.set({"entries": data})
 
 def initialize_chatbot(chat_store, container, username, user_info):
     memory = ChatMemoryBuffer.from_defaults(
@@ -132,9 +103,9 @@ def initialize_chatbot(chat_store, container, username, user_info):
             ),
         )
     )   
-    save_tool = FunctionTool.from_defaults(fn=save_score)
+
     agent = OpenAIAgent.from_tools(
-        tools=[habit_tool, save_tool], 
+        tools=[habit_tool], 
         memory=memory,
         system_prompt=CUSTOM_AGENT_SYSTEM_TEMPLATE.format(user_info=user_info)
     )
