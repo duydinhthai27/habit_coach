@@ -53,3 +53,11 @@ The chatbot is built using Streamlit for a user-friendly UI, Firebase for data s
    ```bash
    git clone https://github.com/your-repo/habit-coach-chatbot.git
    cd habit-coach-chatbot
+2. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+3. **Set Up Firebase**
+4. **Run**
+   ```bash
+   streamlit run app.py
+
