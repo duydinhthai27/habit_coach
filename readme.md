@@ -1,9 +1,11 @@
-
+#HABIT COACH CHAT BOT
 ### Tạo OPENAI API KEY
 Tạo thư mục /.streamlit/secrets.toml, nhập thông tin API vào file này.
 ```python
 [openai]
 OPENAI_API_KEY = "sk-your-api-key"
+[firebase]
+
 ```
 ### Cài đặt các thư viện
 ```python
