@@ -1,15 +1,9 @@
+import firebase_admin
 import streamlit as st
 import hashlib
 from firebase_admin import credentials, firestore, initialize_app
 import json
-# # Firebase Initialization
-# cred = credentials.Certificate("C:/Users/Duy Dinh/AI/habit_coach/.streamlit/habitcoach-73145-862f4ee39527.json")  # Replace with your Firebase JSON file path
-# initialize_app(cred)
-# db = firestore.client()
-# firebase_config_dict = st.secrets["firebase"]["my_settings"]
 
-# cred = credentials.Certificate(firebase_config_dict)
-# Retrieve the Firebase config from Streamlit secrets
 firebase_config_str = st.secrets["firebase"]["my_settings"]
 
 # Convert the string to a dictionary
@@ -19,7 +13,14 @@ firebase_config_dict = dict(firebase_config_str)
 cred = credentials.Certificate(firebase_config_dict)
 
 # Initialize the Firebase app
-initialize_app(cred)
+try:
+    # Initialize the app with a service account, granting admin privileges
+    if not firebase_admin._apps:
+        cred = credentials.Certificate("path/to/your/serviceAccountKey.json")
+        firebase_admin.initialize_app(cred)
+except Exception as err:
+    # Swallow the error (log it or handle it)
+    print(f"Error during Firebase initialization: {err}")
 db = firestore.client()
 # Password Hashing
 def hash_password(password):
