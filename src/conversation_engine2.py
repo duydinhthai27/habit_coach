@@ -153,6 +153,7 @@ def chat_interface(agent, chat_store, container):
                 },
                 "last_updated": datetime.now().isoformat()
             }
+        ref = db.collection(FIREBASE_DB_PATH).document(username)
         # Check if the document exists
         if not ref.get().exists:
             ref = db.collection(FIREBASE_DB_PATH).document(username)
@@ -162,7 +163,7 @@ def chat_interface(agent, chat_store, container):
                 "last_updated": datetime.now().isoformat()
             })
     
-        ref = db.collection(FIREBASE_DB_PATH).document(username)
+        
         ref.update({
             "store." + username: firestore.ArrayUnion(conversation_data["store"][username]),
             "last_updated": conversation_data["last_updated"]
