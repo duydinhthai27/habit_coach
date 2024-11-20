@@ -53,6 +53,14 @@ def save_chat_store(chat_store, username):
     # Reference to the Firestore document based on the username
     ref = db.collection(FIREBASE_DB_PATH).document(username)
     
+    # Check if the document exists
+    if not ref.get().exists:
+        # Initialize with default values for a new user
+        ref.set({
+            "store": {username: []},
+            "last_updated": datetime.now().isoformat()
+        })
+    
     # Extract messages for the given user
     messages = chat_store.messages.get(username, [])
     
