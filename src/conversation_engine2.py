@@ -55,6 +55,7 @@ def save_chat_store(chat_store, username):
     
     # Check if the document exists
     if not ref.get().exists:
+        ref = db.collection(FIREBASE_DB_PATH).add(username)
         # Initialize with default values for a new user
         ref.set({
             "store": {username: []},
